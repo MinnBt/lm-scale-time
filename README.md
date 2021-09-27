@@ -1,20 +1,26 @@
-# lm-scale-time
 
-> A Vue.js project
-![img.png](img.png)
-## Build Setup
-
-``` bash
-# install dependencies
-1 npm install lm-scale-time --save
-
+1，npm install lm-scale-time --save
+------------------
 2 main.js 中
+------------------
 
  import lmScaleTime from 'lm-scale-time'
+
  Vue.use(lmScaleTime);
 
- <lm-scale-time @dragTime></lm-scale-time>
+**参数**
 
-1.0.0版无需传递任何参数。接受值@dragTime
 
+|  参数   | 类型  |默认 |说明 |
+|  ----  | ----  |----  |----|
+| defaultTime  | Array |['00:00:00','01:00:00'] |非必填，设置默认时间|
+
+
+**方法**
+
+|  方法名 |说明 | 参数|
+|  ----  | ---- | ---- |
+| dragTime  | 返回的值 | (dragData)接受返回的开始时间和结束时间|
+
+给个小星星，加个95#油连夜改bug
 

@@ -18,11 +18,12 @@
             :w="offWidth"
             :h="20"
             :resizable="true"
-            :x="0"
+            :x="x"
             @dragging="onDrag"
             @resizing="onResizing"
             :min-height="20"
             :min-width="10"
+
             :handles="['ml', 'mr']"
             :parent="true"
             class="video_track"
@@ -38,12 +39,22 @@
 <script>
 export default {
   name: "lmScaleTime",
+  props:{
+    defaultTime:{
+      type:Array,
+      required: false,
+      default:()=>{
+       return ['00:00:00','01:00:00']
+      }
+    }
+  },
   data() {
     return {
+      x:0,
       selectTimer: 60,
       dateList: [],
       videoCalendar: new Date(),
-      offWidth:60,
+      offWidth:70,
       resultTimer:{
         starTimer:'',
         endTimer:'',
@@ -67,12 +78,12 @@ export default {
     },
 
     onDrag(x, y) {
+      console.log(x);
       let newDay=this.$moment().format("YYYY-MM-DD");
       this.resultTimer.starTimer=this.mapPositionToTime(x)
       //减去一秒
       let odate=this.$moment(newDay +' '+ this.mapPositionToTime(x + this.offWidth+1))
       this.resultTimer.endTimer=odate.subtract(1,'seconds').format('HH:mm:ss');
-      console.log(this.resultTimer);
       this.$emit('dragTime',this.resultTimer)
     },
 
@@ -95,13 +106,35 @@ export default {
     },
 
     //根据时间格式HH:mm:ss 装换位置 x
-    // mapTimeToPosition(time){
-    //   let newDay=this.$moment().format("YYYY-MM-DD");
-    //   return this.$moment(newDay+' '+time).diff(newDay+' 00:00:00',"seconds",true)
-    // }
+    mapTimeToPosition(time){
+      let newDay=this.$moment().format("YYYY-MM-DD");
+      let offWidth=this.$refs.timeAxis.offsetWidth//3px的padding+2px的border
+      return this.$moment(newDay+' '+time).diff(newDay+' 00:00:00',"seconds",true)/(86400/offWidth)
+    }
   },
   mounted() {
-    // console.log(this.mapTimeToPosition('09:00:00'));
+
+    if(!this.defaultTime instanceof Array){
+       console.error('Argument is not an array')
+      //this.defaultTime=['00:00:00','01:00:00']
+      return
+    }
+    if(this.defaultTime.length!==2){
+      console.error('The parameter format is correct')
+     // this.defaultTime=['00:00:00','01:00:00']
+      return
+    }
+    if(this.defaultTime[0]===''||this.defaultTime[1]===''){
+      console.error('Parameter cannot be empty')
+     // this.defaultTime=['00:00:00','01:00:00']
+      return
+    }
+
+    this.$nextTick(()=>{
+      this.x= this.mapTimeToPosition(this.defaultTime[0])
+      this.offWidth=this.mapTimeToPosition(this.defaultTime[1])-this.x
+    })
+
     this.dateList=this.createLine(this.selectTimer);
   }
 }

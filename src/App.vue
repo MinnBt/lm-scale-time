@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <lm-scale-time @dragTime="dragTime"></lm-scale-time>
+    <lm-scale-time @dragTime="dragTime" :defaultTime="defaultTime"></lm-scale-time>
   </div>
 </template>
 
@@ -9,12 +9,12 @@ export default {
   name: 'app',
   data () {
     return {
-
+      defaultTime:['01:00:00','02:00:00']
     }
   },
   methods:{
     dragTime(date){
-      console.log(date);
+       console.log(date);
     }
   }
 }

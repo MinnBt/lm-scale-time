@@ -7,7 +7,7 @@ module.exports = {
   output: {
     path: path.resolve(__dirname, './dist'),
     publicPath: '/dist/',
-   //filename: 'build.js', //开发
+    //filename: 'build.js', //开发
     filename: 'lm-scale-time.js',//打包入口
     library: 'lmScaleTime',
     libraryTarget: "umd",
